@@ -1,13 +1,13 @@
 import React from 'react';
 import {render} from 'enzyme';
-import '../components/form.scss'
+import '../form/form.scss'
 
 class Form extends React.Component {
     constructor(props) {
         super(props)
         
         this.state = {
-            request: '',
+            url: '',
             method: ['POST', 'PUT', 'GET', 'PATCH', 'DELETE'],
             currentMethod: 'GET',
             response: ''
@@ -15,14 +15,35 @@ class Form extends React.Component {
     };
 
     handleInput = event => {
-    this.setState({request: event.target.value})
+    this.setState({url: event.target.value})
     };
 
     handleGet = async() => {
-        let raw = await fetch(`${this.state.request}`);
+
+        let raw = await fetch(`${
+            this.state.url
+        }`);
+
         let data = await raw.json();
-        this.setState({response:data});
+        this.setState({
+            response:data
+        });
+        
+        console.log("this is my get data", data);
+        console.log("this is my get raw", raw);
+
+        let headers = raw.headers;
+        let count = data.count;
+        let results = data.results;
+        let method = this.state.currentMethod;
+
+        // console.log('look at my props', this.props);
+        
+        // // run this function with the above values to set the `state` of the `App`
+        this.props.handleForm(headers, count, method, results);
     }
+    
+    
 
     handlePost = async() => {
 
@@ -57,7 +78,6 @@ class Form extends React.Component {
     render() {
         return (
             <>
-                <h1>RESTy</h1>
                 <input onChange = {this.handleInput}
                 placeholder="Insert URL Here!"/>
                 <h2>Select Method Below</h2>

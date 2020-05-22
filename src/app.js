@@ -1,6 +1,8 @@
 import React from "react";
-import Form from "./components/form.js"
-import Results from "./components/results.js"
+import Header from "./components/header/header.js"
+import Form from "./components/form/form.js"
+import Footer from "./components/footer/footer.js"
+import Results from "./components/results/results.js"
 import "./app.scss";
 
 class App extends React.Component {
@@ -8,23 +10,38 @@ class App extends React.Component {
     super(props);
 
     this.state = {
+      headers: '',
       count: 0,
-      results: [],
-      method: 'GET'
-    };
+      method: 'GET',
+      response: [],
+      name:'',
+    }
   };
 
-  handleForm = (count, method, response) => {
+  handleForm = (headers, count, method, response) => {
+    this.setState({
+      headers,
+      count,
+      method,
+      response
+    })
+    console.log(headers, count, method, response);
+  };
+
+  handleResults = (count, response, name) => {
     this.setState({
       count,
       response,
-      method
-    });
+      name
+    })
   };
 
   render() {
+    console.log('my state', this.state);
     return ( 
       <React.Fragment>
+
+        <Header />
 
         <Form 
           handleForm = {this.handleForm}
@@ -39,6 +56,8 @@ class App extends React.Component {
           name = {this.state.name}
           response = {this.state.response}
         />
+
+        <Footer />
 
       </React.Fragment>
     );
